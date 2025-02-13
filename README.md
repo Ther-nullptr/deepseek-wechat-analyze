@@ -87,11 +87,11 @@ In progress.
 
 ## TODO
 
-[x] Analyze
-[] Role playing
-[] Group chat analysis support
-[] RAG
-[] LoRA fine-tuning for WeChat chat records
+- [x] Analyze
+- [ ] Role playing
+- [ ] Group chat analysis support
+- [ ] RAG
+- [ ] LoRA fine-tuning for WeChat chat records
 
 ## Acknowledgement
 
