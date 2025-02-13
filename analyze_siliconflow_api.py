@@ -6,7 +6,7 @@ if __name__ == '__main__':
     args = argparse.ArgumentParser()
     
     # base
-    args.add_argument("--api_key", type=str, help="API key",default="sk-kspglmdctluqdthuirgbtzkjfmakhzkmahnqwovzgigivejv")
+    args.add_argument("--api_key", type=str, help="API key",default="sk-1122334455")
     args.add_argument("--base_url", type=str, default="https://api.siliconflow.cn/v1/chat/completions", help="API base URL")
     args.add_argument("--model", type=str, default="deepseek-ai/DeepSeek-R1-Distill-Qwen-7B", help="Model name")
     # content

@@ -1,123 +1,101 @@
-# WechatAnnualReport
-微信年度报告生成器！
+# Deepseek Wechat Analyze
 
-## step 1: 导出聊天记录
-- 参考[WeChatMsg仓库](https://github.com/LC044/WeChatMsg)的步骤，推荐从他们的[Release](https://github.com/LC044/WeChatMsg/releases)中直接下载exe文件。
-- 导出联系人信息文件`contacts.csv`和聊天记录文件`messages.csv`，放置于`./data`目录下。
-- 注意这一步仅能在Windows环境导出，Mac暂不支持。
+Deepseek Wechat Analyze is an open-source project that leverages the Deepseek API to analyze WeChat chat records. This tool provides insights into your chat data, including message analysis and role playing. 
 
-## step 2: 安装一些相关的库
+
+## Installation
+
 ```bash
-pip install omegaconf tqdm pandas jieba wordcloud matplotlib
+$ git clone https://github.com/Ther-nullptr/deepseek-wechat-analyze.git
+$ pip install -r requirements.txt
 ```
 
-## step 3: 修改配置文件
-- 修改`./data/config.yaml`，主要就是my_wechat_name（个人微信昵称）一项
-- 可根据需要或者step 4的输出结果自行更改`./data/stopwords.txt`文件，存放屏蔽的关键词，不会出现在词云或者top words中
+## Usage
 
+### 1. Extract your WeChat chat records.
 
-## step 4: 运行分析脚本
-### 生成个人发出的所有消息的聊天报告
-```
-python personal_report.py
-```
-- 生成个人发出的所有聊天信息报告，输出在控制台，同时保存`nmess_per_minute.png`文件（逐分钟发出消息数量）和 `nmess_per_month.png`文件（各月份发出消息数量）在`output`文件夹。
-- 一个示例输出：
+* Refer to the [WeChatMsg](https://github.com/LC044/WeChatMsg) repository for the steps and recommend downloading the exe files directly from their Release.
+* Export the contact information file `contacts.csv` and the chat log file `messages.csv` and place them in the `./data` directory.
+* Note that this step can only be exported in Windows environment, Mac is not supported at the moment.
 
-```
-👏个人微信2023年度报告
+### 2. Select certain private chat records to analyze.
 
-📊这一年中我总共给146个群聊和444个联系人发了40694条消息，共计463785个字。其中最晚的一条消息是在【2023-07-02 04:29:48】发给群聊「xxx」的，内容是「xxx」
+This command will extract all the private messages between you and your friend, and a json file `messages_{args.name}_{args.date}.json` will be generated:
 
-📅【2023年10月20日】这一天一定很特别，我疯狂发送了585条微信。相比之下【2023年01月07日】就显得很安静，只发了2条消息。
-
-👉我最喜欢在群聊【xxx】发言，贡献了5221条没什么价值的聊天记录。
-👉我最喜欢和联系人【xxx】聊天，向ta激情发出2449条信息，得到了2360条回复。
-
-
-🔥我的年度热词Top5：
-1️⃣【ok】共使用608次
-2️⃣【排名】共使用582次
-3️⃣【成绩】共使用453次
-4️⃣【老师】共使用420次
-5️⃣【确实】共使用398次
-
-🤚我的年度表情包Top5:
-[呲牙] [流泪] [强] [旺柴] [合十]
+```bash
+python3 extract_private_message.py -c ./data/config.yaml -n <your friend's wechat name> 
 ```
 
-### 生成群聊的聊天报告
-```
-python group_report.py -n 群聊名称
-```
-- 生成某群聊的聊天信息报告，输出在控制台，同时保存**该群聊的**`nmess_per_minute.png`文件（逐分钟发出消息数量）和 `nmess_per_month.png`文件（各月份发出消息数量）在`output`文件夹。
-- 该函数的输入为群聊名称，如果有难输入的字符或emoji可以不输入全称只输一部分
-- 一个示例输出：
+This command will extract all the private messages between you and your friend on a specific date, and a json file `messages_{args.name}_{args.date}.json` will be generated:
 
-```
-👏群聊【xxxx】2023年度报告
-
-📊这一年中，我们在群里一共发出了23628条消息，229153个字
-  其中最晚的一条消息是【xxx】在【2023-08-06 02:45:55】发出的，内容是【卧槽】
-
-🙋‍♂️本群水群小能手排行：
-  🥇【xxx】产出了7623条消息， 共73673个字的废话
-  🥈【xxx】产出了5221条消息， 共42636个字的废话
-  🥉【xxx】产出了4590条消息， 共45317个字的废话
-
-🔥本群年度热词Top5：
-1️⃣【哈哈哈】共出现了575次
-2️⃣【offer】共出现了318次
-3️⃣【微笑】共出现了315次
-4️⃣【面试】共出现了313次
-5️⃣【确实】共出现了300次
-
-🤚本群年度表情包Top5:
-[微笑] [流泪] [旺柴] [破涕为笑] [呲牙]
+```bash
+python3 extract_private_message.py -c ./data/config.yaml -n <your friend's wechat name> -d <yyyy-mm-dd>
 ```
 
-### 生成与联系人的聊天报告
-```
-python private_report.py -n 联系人昵称
-```
-- 生成和某个人的聊天信息报告，输出在控制台，同时保存**该私聊的**`nmess_per_minute.png`文件（逐分钟发出消息数量）和 `nmess_per_month.png`文件（各月份发出消息数量）。
-- **该函数的输入为联系人昵称（非备注）**，如果有难输入的字符或emoji可以不输入全称只输一部分
-- 一个示例输出：
-```
-👏你和【xxxx】2023年度报告
+### 3(1). Analyze the chat records.
 
-📊这一年中，你们一共发出了1535条消息，10941个字
-  其中最晚的一条消息是【xxxx】在【2023-12-10 04:59:38】发出的，内容是【xxxx】
+Organize different types of prompts in different files:
 
-🔥你们的年度热词Top5：
-1️⃣【xxx】共出现了53次
-2️⃣【xxx】共出现了35次
-3️⃣【xxx】共出现了20次
-4️⃣【xxx】共出现了19次
-5️⃣【xxx】共出现了18次
-
-🤚你们的年度表情包Top5:
-[微笑] 😀 [旺柴] [破涕为笑] [呲牙]
-
-🔥我的年度热词Top5：
-1️⃣【xxx】共使用47次
-2️⃣【xxx】共使用26次
-3️⃣【xxx】共使用11次
-4️⃣【xxx】共使用11次
-5️⃣【xxx】共使用11次
-
-🤚我的年度表情包Top5:
-😀 [流泪] [旺柴] [破涕为笑] [呲牙]
-
-🔥TA的年度热词Top5：
-1️⃣【xxx】共使用11次
-2️⃣【xxx】共使用10次
-3️⃣【xxx】共使用10次
-4️⃣【xxx】共使用9次
-5️⃣【xxx】共使用9次
-
-🤚TA的年度表情包Top5:
-[微笑] [流泪] [旺柴] 😀 [呲牙]
+```txt
+1_system_content.txt: System prompts.
+2_setting_content.txt: The context in which the dialogue takes place, the personalities of the two parties to the dialogue, etc.
+3_chat_content.txt: Chat records dumped in step 2.
+4_target_content.txt: Your questions or the content you want to analyze.
 ```
 
-- 当前版本仅对文字信息进行分析，拍一拍、进群邀请、红包、图片、gif表情包等信息暂时移除。之后会考虑加入拍一拍、红包、gif表情包的统计。
+The prompts will be contacted in the order of 1-2-3-4 layer.
+
+We provide the available deepseek API providers in [api.md](./api.md). You can choose one of them to analyze the chat records.
+
+For OpenAI-like API:
+
+```bash
+python3 analyze_openai_api.py \
+    --api_key <your_api_key> \
+    --base_url <your_base_url> \
+    --model <your_model_name> \
+    --system_content_file <your_system_content_file> \
+    --setting_content_file <your_setting_content_file> \
+    --chat_content_file <your_chat_content_file> \
+    --target_content_file <your_target_content_file> \
+    --temperature <temperature> \
+    --top_p <top_p> \
+    --presence_penalty <presence_penalty> \
+    --seed <seed>
+```
+
+For SiliconFlow-like API:
+
+```bash
+python3 analyze_siliconflow_api.py \
+    --api_key <your_api_key> \
+    --base_url <your_base_url> \
+    --model <your_model_name> \
+    --system_content_file <your_system_content_file> \
+    --setting_content_file <your_setting_content_file> \
+    --chat_content_file <your_chat_content_file> \
+    --target_content_file <your_target_content_file> \
+    --temperature <temperature> \
+    --top_p <top_p> \
+    --presence_penalty <presence_penalty> \
+    --seed <seed>
+```
+
+### 3(2). Role playing.
+
+In progress.
+
+## TODO
+
+[x] Analyze
+[] Role playing
+[] Group chat analysis support
+[] RAG
+[] LoRA fine-tuning for WeChat chat records
+
+## Acknowledgement
+
+This project is inspired by the following repositories:
+
+* [WeChatMsg](https://github.com/LC044/WeChatMsg)
+* [WechatAnnualReport](https://github.com/chenyifanthu/WechatAnnualReport)

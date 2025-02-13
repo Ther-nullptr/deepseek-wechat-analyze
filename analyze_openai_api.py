@@ -6,7 +6,7 @@ if __name__ == '__main__':
     args = argparse.ArgumentParser()
     
     # base
-    args.add_argument("--api_key", type=str, help="API key",default="sk-7b4PjDNelIdDBaLByb9KCUU1GrvLG9DNSiLQZ7qUhkTHpoDy")
+    args.add_argument("--api_key", type=str, help="API key",default="sk-1122334455")
     args.add_argument("--base_url", type=str, default="https://tbnx.plus7.plus/v1", help="API base URL")
     args.add_argument("--model", type=str, default="deepseek-reasoner", help="Model name")
     # content

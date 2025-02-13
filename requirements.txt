@@ -1,0 +1,4 @@
+omegaconf
+openai
+pandas
+Requests

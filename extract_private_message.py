@@ -10,7 +10,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", '-c', type=str, default="./data/config.yaml")
     parser.add_argument('--name', '-n', type=str, required=True, help='WeChat nickname of the contact, note that it is not the WeChat ID or remark name')
-    parser.add_argument('--date', '-s', type=str, default=None, help='Set date to yyyy-mm-dd to filter messages on a specific date')
+    parser.add_argument('--date', '-d', type=str, default=None, help='Set date to yyyy-mm-dd to filter messages on a specific date')
     args = parser.parse_args()
     args = load_config(args)
     return args

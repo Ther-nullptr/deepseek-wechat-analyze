@@ -8,3 +8,4 @@ data/
 !data/config.yaml
 *.json
 *.txt
+!requirements.txt
