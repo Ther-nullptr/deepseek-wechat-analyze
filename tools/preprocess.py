@@ -1,5 +1,4 @@
 import re
-import argparse
 import pandas as pd
 from .emojis import unify_emoji
 from omegaconf import OmegaConf
@@ -12,7 +11,6 @@ def load_config(args):
     
 
 def filter_by_name(df: pd.DataFrame, group_name: str):
-    # 查找某个特定名称群聊/联系人的聊天记录
     res = df[df["NickName"].apply(lambda x: group_name in x)]
     fullname = res["NickName"].value_counts().index[0]
     filtered = res[res["NickName"] == fullname]
@@ -20,15 +18,7 @@ def filter_by_name(df: pd.DataFrame, group_name: str):
     return filtered, fullname
 
 
-# def name2remark(contacts: pd.DataFrame, name: str):
-#     if name == MY_WECHAT_NAME:
-#         return "我"
-#     res = contacts[contacts["NickName"] == name]["Remark"].values
-#     return res[0] if len(res) > 0 else name
-
-
 def parse_message(msg: str):
-    # 过滤掉部份无用的消息: 表情包、语音、图片、视频、位置、名片、系统消息
     emoji_pattern = re.compile("<emoji .*?>")
     voice_pattern = re.compile("<voicemsg .*?/>")
     image_pattern = re.compile("<img .*?/>")
@@ -45,16 +35,16 @@ def parse_message(msg: str):
 
 
 def load_data(args):
-    # 读取[start_date, end_date)时间段内的聊天记录(不包括end_date当天)
+    # read message
     global contacts, messages
     contacts = pd.read_csv(args.contacts_path, index_col=False)
     
-    # 区分群聊和联系人
+    # whether the contact is a group
     isgroup = {}
     for i, row in contacts.iterrows():
         isgroup[row['NickName']] = 'chatroom' in row['UserName']
         
-    # 将备注名转换为微信昵称
+    # convert remark to nickname
     remark2nickname = {'我': args.my_wechat_name}
     for i, row in contacts.iterrows():
         if not isgroup[row['NickName']] and row['Remark']:

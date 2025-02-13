@@ -107,14 +107,6 @@ EMOJIS = {
     "[哇]": {"cn": "[哇]", "zb": "[Wow]"}
 }
 
-EMOJI_PATTERN = re.compile(
-    "({}|"
-    "[\U0001F300-\U0001F3FB\U0001F3FF-\U0001F9B0\U0001F9B3-\U0001F9EF]"
-    "[\U0001F3FB-\U0001F3FF]?"
-    "[\U0001F9B0-\U0001F9B3]?)"
-    .format("|".join([re.escape(x) for x in EMOJIS.keys()]))
-)
-
 def unify_emoji(text):
     for label, item in EMOJIS.items():
         for v in item.values():

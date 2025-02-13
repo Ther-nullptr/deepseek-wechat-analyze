@@ -6,3 +6,5 @@ temp*
 output/
 data/
 !data/config.yaml
+*.json
+*.txt
