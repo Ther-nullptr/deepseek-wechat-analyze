@@ -83,12 +83,29 @@ python3 analyze_siliconflow_api.py \
 
 ### 3(2). Role playing.
 
-In progress.
+User can interact with the chat records by role playing just like in wechat. The command is as follows:
+
+```bash
+python3 dialogue_openai_api.py \
+    --api_key <your_api_key> \
+    --base_url <your_base_url> \
+    --model <your_model_name> \
+    --system_content_file <your_system_content_file> \
+    --setting_content_file <your_setting_content_file> \
+    --chat_content_file <your_chat_content_file> \
+    --target_content_file <your_target_content_file> \
+    --temperature <temperature> \
+    --top_p <top_p> \
+    --presence_penalty <presence_penalty> \
+    --seed <seed> \
+    --max_dialogue_length <max_dialogue_length> \
+    --print_thinking False
+```
 
 ## TODO
 
 - [x] Analyze
-- [ ] Role playing
+- [x] Role playing
 - [ ] Group chat analysis support
 - [ ] RAG
 - [ ] LoRA fine-tuning for WeChat chat records
